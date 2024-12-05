@@ -1,1 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1 .0">
+    <title>Détails du Plat - Food Truck Délices</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="header">
+                <h1>Détails du Plat</h1>
+                <button @click="goBack">Retour aux plats</button>
+            </div>
 
+            <div class="meal-detail">
+                <h2 class="meal-title">{{meal.name}}</h2>
+                <img :src="meal.image" :alt="meal.name" class="meal-image">
+                <p class="meal-description">{{meal.description}}</p>
+                <p class="meal-price">Prix: {{meal.price}} €</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="js/meal-details.js"></script>
+</body>
+</html>
