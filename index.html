@@ -1,0 +1,58 @@
+ <div id="app">
+	<div class="container">
+		<div class="categories">
+			<div class="cat pointer" v-for="cat in categories">
+				<div class="cat-img" :style="{backgroundImage:`url(${cat.image})`}"></div>
+				<span class="title">{{cat.name}}</span>
+			</div>
+		</div>
+		<div class="meal" v-for="meal in meals">
+			<h5 class="meal-title">
+				{{meal.name}}
+				<span class="material-icons pointer" @click="selectedMeal = meal.id" v-if="selectedMeal !== meal.id">
+					more_horiz
+				</span>
+				<span class="material-icons pointer" @click="selectedMeal = null" v-if="selectedMeal && selectedMeal == meal.id">
+					close
+				</span>
+				<div class="more-menu" v-if="selectedMeal && selectedMeal == meal.id">
+					<div>
+						<span class="material-icons pointer">
+							share
+						</span>
+						partager
+					</div>
+					<div>
+						<span class="material-icons pointer">
+							flag
+						</span>
+						signaler
+					</div>
+				</div>
+			</h5>
+			<div class="image-container">
+				<img :src="meal.image" alt="" v-if="meal.image">
+				<div class="meal-actions">
+					<button class="pink">
+						<span class="material-icons">
+							favorite_border
+						</span>
+					</button>
+					<button class="comment">
+						<span class="material-icons">
+							comment
+						</span>
+						<span class="count">{{meal.comments}}</span>
+					</button>
+				</div>
+			</div>
+			<p class="meal-desc">{{meal.description}}</p>
+			<div class="meal-price">
+				<div v-for="price in meal.price">
+					{{price.name}}
+					<span>{{price.amount}}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
