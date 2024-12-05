@@ -1,1 +1,72 @@
+body {
+    font-family: 'Rubik', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: # f9f9f9;
+}
 
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.categories, .meals {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.cat, .meal {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.cat:hover, .meal:hover {
+    transform: scale(1.05);
+}
+
+.cat-title, .meal-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.meal-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.meal-description {
+    color: #555;
+}
+
+.meal-price {
+    font-size: 1.1em;
+    color: #333;
+    font-weight: bold;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
