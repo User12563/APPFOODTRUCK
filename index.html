@@ -1,58 +1,303 @@
- <div id="app">
-	<div class="container">
-		<div class="categories">
-			<div class="cat pointer" v-for="cat in categories">
-				<div class="cat-img" :style="{backgroundImage:`url(${cat.image})`}"></div>
-				<span class="title">{{cat.name}}</span>
-			</div>
-		</div>
-		<div class="meal" v-for="meal in meals">
-			<h5 class="meal-title">
-				{{meal.name}}
-				<span class="material-icons pointer" @click="selectedMeal = meal.id" v-if="selectedMeal !== meal.id">
-					more_horiz
-				</span>
-				<span class="material-icons pointer" @click="selectedMeal = null" v-if="selectedMeal && selectedMeal == meal.id">
-					close
-				</span>
-				<div class="more-menu" v-if="selectedMeal && selectedMeal == meal.id">
-					<div>
-						<span class="material-icons pointer">
-							share
-						</span>
-						partager
-					</div>
-					<div>
-						<span class="material-icons pointer">
-							flag
-						</span>
-						signaler
-					</div>
-				</div>
-			</h5>
-			<div class="image-container">
-				<img :src="meal.image" alt="" v-if="meal.image">
-				<div class="meal-actions">
-					<button class="pink">
-						<span class="material-icons">
-							favorite_border
-						</span>
-					</button>
-					<button class="comment">
-						<span class="material-icons">
-							comment
-						</span>
-						<span class="count">{{meal.comments}}</span>
-					</button>
-				</div>
-			</div>
-			<p class="meal-desc">{{meal.description}}</p>
-			<div class="meal-price">
-				<div v-for="price in meal.price">
-					{{price.name}}
-					<span>{{price.amount}}</span>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Truck Délices</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --background-color: #F7FFF7;
+            --text-color: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .cat {
+            width: 30%;
+            margin-bottom: 15px;
+            text-align: center;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .cat:hover {
+            transform: scale(1.05);
+        }
+
+        .cat-img {
+            width: 100%;
+            height: 80px;
+            background-position: center;
+            background-size: cover;
+        }
+
+        .cat-title {
+            padding: 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .meal {
+            background-color: white;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .meal:hover {
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+
+        .meal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .meal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .meal-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .meal-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .meal-prices {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .meal-price {
+            text-align: center;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+            flex-grow: 1;
+            margin: 0 5px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-favorite {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-comment {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        .comments {
+            margin-top: 15px;
+        }
+
+        .comment {
+            background-color: white;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .comment-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .comment-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .comment-button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="header">
+                <h1>🚚 Food Truck Délices</h1>
+                <p>Découvrez nos délicieuses spécialités</p>
+            </div>
+
+            <div class="categories">
+                <div class="cat" v-for="cat in categories" :key="cat.name" @click="goToCategory(cat.name)">
+                    <div class="cat-img" :style="{backgroundImage: `url(${cat.image})`}"></div>
+                    <div class="cat-title">{{cat.name}}</div>
+                </div>
+            </div>
+
+            <div class="meals">
+                <div class="meal" v-for="meal in meals" :key="meal.id" @click="goToMealDetails(meal.id)">
+                    <div class="meal-header">
+                        <h2 class="meal-title">{{meal.name}}</h2>
+                    </div>
+                    
+                    <img :src="meal.image" :alt="meal.name" class="meal-image">
+                    
+                    <p class="meal-description">{{meal.description}}</p>
+                    
+                    <div class="meal-prices">
+                        <div class="meal-price" v-for="price in meal.price" :key="price.name">
+                            {{price.name}}<br>
+                            <strong>{{price.amount}} €</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                newComment: '',
+                categories: [
+                    { name: "Entrées", image: "https://images.unsplash.com/photo-1546548970-71785318a17b" },
+                    { name: "Plats", image: "https://images.unsplash.com/photo-1546069901-ba9599a5a1aa" },
+                    { name: "Desserts", image: "https://images.unsplash.com/photo-1558302204-e27cad012525" },
+                    { name: "Boissons", image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba" },
+                    { name: "Végétarien", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd" },
+                    { name: "Spécialités", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836" }
+                ],
+                meals: [
+                    {
+                        id: 1,
+                        name: "Bowl de Quinoa",
+                        image: "https://images.unsplash.com/photo-1589927986089-35812378c1b0",
+                        description: "Un mélange nutritif de quinoa, légumes frais et vinaigrette maison.",
+                        price: [{ name: "Taille petite", amount: 7.99 }, { name: "Taille grande", amount : 10.99 }],
+                        ingredients: ["Quinoa", "Tomates", "Concombres", "Vinaigrette maison"]
+                    },
+                    {
+                        id: 2,
+                        name: "Tacos au Poulet",
+                        image: "https://images.unsplash.com/photo-1603052875030-1c1c1c1c1c1c",
+                        description: "Tacos garnis de poulet grillé, salsa et guacamole.",
+                        price: [{ name: "1 Taco", amount: 3.50 }, { name: "3 Tacos", amount: 9.99 }],
+                        ingredients: ["Poulet grillé", "Tortilla", "Salsa", "Guacamole"]
+                    },
+                    {
+                        id: 3,
+                        name: "Salade César",
+                        image: "https://images.unsplash.com/photo-1603052875030-1c1c1c1c1c1c",
+                        description: "Salade romaine, poulet grillé, croûtons et sauce César.",
+                        price: [{ name: "Taille petite", amount: 6.99 }, { name: "Taille grande", amount: 11.99 }],
+                        ingredients: ["Laitue romaine", "Poulet grillé", "Croûtons", "Sauce César"]
+                    }
+                ]
+            },
+            methods: {
+                goToCategory(categoryName) {
+                    // Logique pour naviguer vers la page de catégorie
+                    alert(`Naviguer vers la catégorie: ${categoryName}`);
+                },
+                goToMealDetails(mealId) {
+                    const meal = this.meals.find(meal => meal.id === mealId);
+                    if (meal) {
+                        alert(`Détails du plat: ${meal.name}\nIngrédients: ${meal.ingredients.join(', ')}`);
+                    }
+                },
+                addToFavorites(id) {
+                    alert(`Ajouté aux favoris: ${id}`);
+                },
+                commentOnMeal(id) {
+                    alert(`Commenter le plat: ${id}`);
+                },
+                submitComment(mealId) {
+                    const meal = this.meals.find(meal => meal.id === mealId);
+                    if (this.newComment.trim() !== '') {
+                        meal.comments.push(this.newComment);
+                        this.newComment = '';
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html> 
